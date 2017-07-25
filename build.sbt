@@ -8,7 +8,6 @@ resolvers += "Apache repo" at "https://repository.apache.org/content/repositorie
 
 val sparkVersion = "2.2.0"
 
-dependencyOverrides += "com.fasterxml.jackson.module" % "jackson-module-scala_2.11" % "2.8.9"
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-json" % "2.6.0",
   "org.apache.spark" % "spark-core_2.11" % sparkVersion,
