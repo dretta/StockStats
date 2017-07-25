@@ -1,2 +1,2 @@
 # StockStats
-Near Real-Time Stock Analytics
+Real-Time Stock Analytics
