@@ -4,17 +4,17 @@ import java.util.{Date, Properties}
 
 import org.apache.kafka.clients.producer.{KafkaProducer => Producer, ProducerRecord => Record}
 import play.api.libs.json.{JsValue, Json}
-import com.dretta.{JsonSerializer, Serialization}
 import java.io.{ByteArrayOutputStream, ObjectOutputStream}
+import com.dretta.JsonSerializer
 
 import scala.util.Random
 
 class StockProducer(val topic: String, val brokers: String, props: Properties)
-  extends Producer(props) with JsonSerializer{
+  extends Producer(props) {
 
   var totalEvents: Int = 0
   var totalSeconds: Long = 0
-  val producer = new Producer[String, Array[Byte]](props)
+  val producer = new Producer[String, JsValue](props)
 
   def generateMessage(): Unit ={
     val url = "https://www.google.com/finance/info?q=NASDAQ:GOOG"
@@ -25,8 +25,11 @@ class StockProducer(val topic: String, val brokers: String, props: Properties)
       "change_percent" -> parsed(0)("cp"), "change_price" -> parsed(0)("c"),
       "last_close_price" -> parsed(0)("pcls_fix"), "last_trade_price" -> parsed(0)("l"),
       "last_trade_size" -> parsed(0)("s"), "stock_index" -> parsed(0)("e"))
-    val stockJson = Json.toJson(stockMap)
-    val data = new Record[String, Array[Byte]](topic, serialize(topic, stockJson))
+    //println(stockMap.toString())
+    val stockJson: JsValue = Json.toJson(stockMap)
+    //val data = new Record[String, Array[Byte]](topic, serialize(topic, stockJson))
+    val data = new Record[String, JsValue](topic, stockJson)
+    //totalEvents += 1
     producer.send(data)
   }
   /*
