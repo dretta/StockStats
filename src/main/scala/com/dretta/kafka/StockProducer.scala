@@ -1,13 +1,10 @@
 package com.dretta.kafka
 
-import java.util.{Date, Properties}
+import java.util.Properties
 
 import org.apache.kafka.clients.producer.{KafkaProducer => Producer, ProducerRecord => Record}
 import play.api.libs.json.{JsValue, Json}
-import java.io.{ByteArrayOutputStream, ObjectOutputStream}
-import com.dretta.JsonSerializer
 
-import scala.util.Random
 
 class StockProducer(val topic: String, val brokers: String, props: Properties)
   extends Producer(props) {
@@ -25,31 +22,9 @@ class StockProducer(val topic: String, val brokers: String, props: Properties)
       "change_percent" -> parsed(0)("cp"), "change_price" -> parsed(0)("c"),
       "last_close_price" -> parsed(0)("pcls_fix"), "last_trade_price" -> parsed(0)("l"),
       "last_trade_size" -> parsed(0)("s"), "stock_index" -> parsed(0)("e"))
-    //println(stockMap.toString())
     val stockJson: JsValue = Json.toJson(stockMap)
-    //val data = new Record[String, Array[Byte]](topic, serialize(topic, stockJson))
     val data = new Record[String, JsValue](topic, stockJson)
-    //totalEvents += 1
     producer.send(data)
   }
-  /*
-  def generateMessages(events: Int){
-    val rnd = new Random()
-    val t = System.currentTimeMillis()
-    for (nEvents <- Range(0, events)) {
-      val runtime = new Date().getTime
-      val ip = "192.168.2." + rnd.nextInt(255)
-      val msg = runtime + "," + nEvents + ",www.example.com," + ip
-      val data = new Record[String, String](topic, ip, msg)
 
-      producer.send(data)
-    }
-    totalSeconds += System.currentTimeMillis() - t
-    totalEvents += events
-    System.out.println("Sent out " + events + " message(s)")
-  }
-  */
-  def speed() {
-    System.out.println("Average messages sent per second: " + totalEvents * 1000 / totalSeconds)
-  }
 }

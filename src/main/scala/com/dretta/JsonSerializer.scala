@@ -32,25 +32,6 @@ class JsonSerializer extends Serializer[JsValue]{
 
 }
 
-trait JsonDeSerializer extends Deserializer[JsValue]{
-
-  private val encoding = "UTF8"
-
-  override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-  override def close(): Unit = {}
-
-  def deserialize(topic: String, data: Array[Byte]):JsValue  = {
-    val opData: Option[Array[Byte]] = Option(data)
-    try {
-      opData.map(new String(_, encoding)).map(Json.parse).orNull
-    } catch {
-      case e: UnsupportedEncodingException =>
-        throw new SerializationException("Error when deserializing Array[Byte] to (string) JsValue " +
-          "due to unsupported encoding " + encoding )
-    }
-  }
-
-}
 
 class JsonDecoder(props: VerifiableProperties = null) extends Decoder[JsValue]{
 

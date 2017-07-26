@@ -1,17 +1,15 @@
 package com.dretta
 
-import _root_.kafka.serializer.{DefaultDecoder, StringDecoder}
+import _root_.kafka.serializer.StringDecoder
 import java.util.Properties
 
 import com.dretta.kafka.StockProducer
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming.kafka._
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-//import com.dretta.JsonDeSerializer
 import play.api.libs.json.JsValue
-//import com.dretta.JsonDecoder
 
-object StockStats extends App with JsonDeSerializer{
+object StockStats extends App {
   var events = args(0).toInt
   val topic = args(1)
   val brokers = args(2)
