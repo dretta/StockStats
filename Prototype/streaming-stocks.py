@@ -145,13 +145,13 @@ if __name__ == '__main__':
         raise Exception("Do not use keywords for keyspace name")
     session.set_keyspace(keyspace)
 
-    table_statement = "CREATE TABLE IF NOT EXISTS {0} (symbol text, lasttradedatetime timestamp, change_percent double, change_price double, last_close_price double, last_trade_price double, lasttradesize int, stockindex text, PRIMARY KEY (symbol, lasttradedatetime)) WITH CLUSTERING ORDER BY (lasttradedatetime DESC)".format(table)
+    table_statement = "CREATE TABLE IF NOT EXISTS {0} (symbol text, last_trade_date_time timestamp, change_percent double, change_price double, last_close_price double, last_trade_price double, last_trade_size int, stock_index text, PRIMARY KEY (symbol, last_trade_date_time)) WITH CLUSTERING ORDER BY (last_trade_date_time DESC)".format(table)
     try:
         session.execute(table_statement)
     except protocol.SyntaxException as se:
         raise Exception("Do not use keywords for table name")
     table_columns = session.execute("SELECT * FROM {}".format(table)).column_names
-    for required_column in ['symbol', 'lasttradedatetime', 'change_percent', 'change_price', 'last_close_price', 'last_trade_price', 'lasttradesize', 'stockindex']:
+    for required_column in ['symbol', 'last_trade_date_time', 'change_percent', 'change_price', 'last_close_price', 'last_trade_price', 'last_trade_size', 'stock_index']:
         if required_column not in table_columns:
             print("Column Mismatch, Remaking table")
             session.execute("DROP TABLE {0}".format(table))
@@ -162,7 +162,7 @@ if __name__ == '__main__':
     for record in records[tp]:
         decoded_str = record.value.decode('utf-8')
         stock = json.loads(json.loads(decoded_str))
-        statement = "INSERT INTO {0} (symbol, lasttradedatetime, change_price, change_percent, last_close_price, last_trade_price, lasttradesize, stockindex) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) USING TIMESTAMP %s".format(table)
+        statement = "INSERT INTO {0} (symbol, last_trade_date_time, change_price, change_percent, last_close_price, last_trade_price, last_trade_size, stock_index) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) USING TIMESTAMP %s".format(table)
         lastTradeDateTime = datetime.strptime(stock['LastTradeDateTime'], "%Y-%m-%dT%H:%M:%SZ")
         change = float(stock['Change'])
         changePercent = float(stock['ChangePercent'])
