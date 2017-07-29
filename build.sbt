@@ -10,8 +10,8 @@ val sparkVersion = "2.2.0"
 
 dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.5"
 
-
 libraryDependencies ++= Seq(
+  "com.datastax.spark" %% "spark-cassandra-connector" % "2.0.3",
   "com.typesafe.play" %% "play-json" % "2.6.0",
   "org.apache.spark" % "spark-core_2.11" % sparkVersion,
   "org.apache.spark" % "spark-sql_2.11" % sparkVersion ,
