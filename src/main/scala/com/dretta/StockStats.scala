@@ -15,6 +15,8 @@ import com.datastax.spark.connector.writer.WriteConf
 import org.apache.spark.sql.cassandra._
 import java.lang.{Double => JavaDouble, Integer => JavaInteger}
 
+import org.apache.spark.{SparkConf, SparkContext}
+
 object StockStats extends App {
   var events = args(0).toInt
   val topic = args(1)
@@ -29,9 +31,10 @@ object StockStats extends App {
 
   val producer = new StockProducer(topic, brokers, props)
 
-  val spark = SparkSession.builder().master("local[*]").getOrCreate()
+  val conf = new SparkConf().setMaster("local[*]").setAppName("StockStats")
+    .setJars(Seq("./target/scala-2.11/StockStats-assembly-1.0.jar"))
   //val spark = SparkSession.builder().master("spark://master:7077").getOrCreate()
-  val sc = spark.sparkContext
+  val sc = new SparkContext(conf)
   val ssc = new StreamingContext(sc, Seconds(2))
   val topicSet = topic.split(",").toSet
   val kafkaParams = Map[String, String]("metadata.broker.list" -> brokers)
