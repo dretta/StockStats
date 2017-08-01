@@ -14,7 +14,7 @@ libraryDependencies ++= Seq(
   "com.datastax.spark" %% "spark-cassandra-connector" % "2.0.3",
   "com.typesafe.play" %% "play-json" % "2.6.0",
   "org.apache.spark" % "spark-core_2.11" % sparkVersion,
-  "org.apache.spark" % "spark-sql_2.11" % sparkVersion ,
+  "org.apache.spark" % "spark-sql_2.11" % sparkVersion,
   "org.apache.spark" % "spark-streaming_2.11" % sparkVersion,
   "org.apache.spark" % "spark-streaming-kafka-0-8_2.11" % sparkVersion,
   "org.apache.kafka" % "kafka_2.11" % "0.8.2.1",
