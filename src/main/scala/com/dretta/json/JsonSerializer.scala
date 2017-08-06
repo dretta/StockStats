@@ -22,7 +22,7 @@ class JsonSerializer extends Serializer[JsValue]{
     try {
       opData.map(_.toString.getBytes(encoding)).orNull
     } catch {
-      case e: UnsupportedEncodingException =>
+      case _: UnsupportedEncodingException =>
         throw new SerializationException("Error when serializing JsValue (toString) to Array[Byte] " +
           "due to unsupported encoding " + encoding )
     }
@@ -33,7 +33,7 @@ class JsonSerializer extends Serializer[JsValue]{
 
 class JsonDecoder(props: VerifiableProperties = null) extends Decoder[JsValue]{
 
-  val encoding =
+  private val encoding =
     if(props == null)
       "UTF8"
     else
@@ -44,8 +44,8 @@ class JsonDecoder(props: VerifiableProperties = null) extends Decoder[JsValue]{
     try {
       opData.map(new String(_, encoding)).map(Json.parse).orNull
     } catch {
-      case e: UnsupportedEncodingException =>
-        throw new SerializationException("Error when deserializing Array[Byte] to (string) JsValue " +
+      case _: UnsupportedEncodingException =>
+        throw new SerializationException("Error when de-serializing Array[Byte] to (string) JsValue " +
           "due to unsupported encoding " + encoding )
     }
   }
