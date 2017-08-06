@@ -14,9 +14,8 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 object StockStats extends App with GetJsValue{
 
-    val events = args(0).toInt
-    val topic = args(1)
-    val brokers = args(2)
+    val topic = args(0)
+    val brokers = args(1)
 
     val props = new Properties()
     props.put("bootstrap.servers", brokers)
