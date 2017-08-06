@@ -1,15 +1,13 @@
-package com.dretta
+package com.dretta.json
 
+import java.io.UnsupportedEncodingException
 import java.util
 
-import org.apache.kafka.common.serialization.{Deserializer, Serializer}
-import play.api.libs.json.JsValue
-import java.io.UnsupportedEncodingException
-
-import org.apache.kafka.common.errors.SerializationException
-import play.api.libs.json.Json
 import _root_.kafka.serializer.Decoder
 import _root_.kafka.utils.VerifiableProperties
+import org.apache.kafka.common.errors.SerializationException
+import org.apache.kafka.common.serialization.Serializer
+import play.api.libs.json.{JsValue, Json}
 
 class JsonSerializer extends Serializer[JsValue]{
 

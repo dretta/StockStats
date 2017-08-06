@@ -11,6 +11,7 @@ val sparkVersion = "2.2.0"
 dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.5"
 
 libraryDependencies ++= Seq(
+  "commons-lang" % "commons-lang" % "2.6",
   "com.datastax.spark" %% "spark-cassandra-connector" % "2.0.3",
   "com.typesafe.play" %% "play-json" % "2.6.0",
   "org.apache.spark" % "spark-core_2.11" % sparkVersion,
@@ -23,8 +24,3 @@ libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.6",
   "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 )
-
-assemblyMergeStrategy in assembly := {
-  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-  case x => MergeStrategy.first
-}

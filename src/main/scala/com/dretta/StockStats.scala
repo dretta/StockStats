@@ -15,12 +15,13 @@ import com.datastax.spark.connector.writer.WriteConf
 import org.apache.spark.sql.cassandra._
 import java.lang.{Double => JavaDouble, Integer => JavaInteger}
 
+import com.dretta.json.JsonDecoder
 import org.apache.kafka.clients.producer
 import org.apache.spark.{SparkConf, SparkContext}
 
 object StockStats extends App {
 
-    var events : Int = args(0).toInt
+    val events = args(0).toInt
     val topic = args(1)
     val brokers = args(2)
 
@@ -28,12 +29,11 @@ object StockStats extends App {
     props.put("bootstrap.servers", brokers)
     props.put("client.id", "ScalaProducerExample")
     props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-    props.put("value.serializer", "com.dretta.JsonSerializer")
+    props.put("value.serializer", "com.dretta.json.JsonSerializer")
 
     val producer = new StockProducer(topic, brokers, props)
 
     val conf = new SparkConf().setMaster("local[*]").setAppName("StockStats")
-    //conf.setJars(Seq("./target/scala-2.11/StockStats-assembly-1.0.jar"))
 
     val sc = new SparkContext(conf)
     val ssc = new StreamingContext(sc, Seconds(2))
