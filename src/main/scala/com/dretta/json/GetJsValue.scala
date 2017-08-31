@@ -13,28 +13,15 @@ trait GetJsValue {
     format.parse(strDateTime)
   }
 
-  def getDouble(jsDouble : JsValue) : JavaDouble = {
-    val strDouble : String = jsDouble.asInstanceOf[JsString].value.replace(",", "")
-    val jDouble : JavaDouble = JavaDouble.valueOf(strDouble)
-    jDouble
+  def getDouble(jsDouble : JsValue) : JavaDouble = getNumber(jsDouble)(JavaDouble.valueOf)
+
+  def getInteger(jsInteger : JsValue) : JavaInteger = getNumber(jsInteger)(JavaInteger.valueOf)
+
+  def getNumber[T](jsNumber : JsValue)(f : String => T) : T = {
+    val strNumber : String = jsNumber.asInstanceOf[JsString].value.replace(",", "")
+    f(strNumber)
   }
 
-  def getInteger(jsInteger : JsValue) : JavaInteger = {
-    val strInteger : String = jsInteger.asInstanceOf[JsString].value
-    val jInteger : JavaInteger = JavaInteger.valueOf(strInteger)
-    jInteger
-  }
-  //TODO: Make getNumber working
-  /*
-    def getNumber[T](jsNumber : JsValue) : T = {
-      val strNumber : String = jsNumber.asInstanceOf[JsString].value
-      val jNumber = T  match {
-        case JavaInteger => 0
-        case JavaDouble => 0.0
-      }
-      jNumber
-    }
-  */
   def getString(jsString : JsValue) : String = {
     jsString.asInstanceOf[JsString].value.replace("\"", "")
   }
