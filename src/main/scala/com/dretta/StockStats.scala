@@ -52,11 +52,13 @@ object StockStats extends App with GetJsValue{
     val startTime = System.currentTimeMillis()
     val endTime = startTime + (10 * 1000)
 
+    println("Start message generator")
     while(System.currentTimeMillis() < endTime){
       producer.generateMessage()
       Thread.sleep(2000)
     }
 
+    println("Start table connection")
     val rdd = sc.cassandraTable("ks", "stocks")
 
 
